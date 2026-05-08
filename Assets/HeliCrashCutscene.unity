@@ -1344,7 +1344,7 @@ MonoBehaviour:
   breakTime: 5
   crashHoldTime: 0.4
   blackoutFadeTime: 1.2
-  nextSceneName: WakeUpCrash
+  nextSceneName: MainScene
   forwardSpeed: 8
   hoverAmount: 0.5
   hoverSpeed: 1.5
