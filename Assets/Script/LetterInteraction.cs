@@ -6,6 +6,10 @@ public class LetterInteraction : MonoBehaviour
     public GameObject pressEText;
     public float interactionDistance = 3f;
 
+    [Header("Paper Sound")]
+    public AudioSource paperAudioSource;
+    public AudioClip paperOpenSound;
+
     private Camera playerCamera;
     private bool letterOpen = false;
 
@@ -64,6 +68,11 @@ public class LetterInteraction : MonoBehaviour
 
         if (pressEText != null)
             pressEText.SetActive(false);
+
+        if (paperAudioSource != null && paperOpenSound != null)
+        {
+            paperAudioSource.PlayOneShot(paperOpenSound);
+        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
