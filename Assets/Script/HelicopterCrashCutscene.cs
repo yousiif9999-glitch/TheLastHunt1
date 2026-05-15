@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using TMPro;
 
 public class HelicopterCrashCutscene : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class HelicopterCrashCutscene : MonoBehaviour
     public ParticleSystem crashBurstEffect;
     public HeliCameraShake cameraShake;
     public CanvasGroup blackoutGroup;
+    public TMP_Text afterCrashText;
 
     [Header("Audio")]
     public AudioSource rotorLoop;
@@ -24,6 +26,8 @@ public class HelicopterCrashCutscene : MonoBehaviour
     public float breakTime = 6f;
     public float crashHoldTime = 0.55f;
     public float blackoutFadeTime = 1.2f;
+    public float afterCrashTextFadeTime = 1f;
+    public float afterCrashTextHoldTime = 2.5f;
     public string nextSceneName = "WakeUpCrash";
 
     [Header("Flight")]
@@ -89,6 +93,13 @@ public class HelicopterCrashCutscene : MonoBehaviour
 
         if (blackoutGroup != null)
             blackoutGroup.alpha = 0f;
+
+        if (afterCrashText != null)
+        {
+            afterCrashText.text = "24 HOURS AFTER THE CRASH...";
+            Color c = afterCrashText.color;
+            afterCrashText.color = new Color(c.r, c.g, c.b, 0f);
+        }
 
         SetSmoke(startSmokeRate);
 
@@ -282,6 +293,14 @@ public class HelicopterCrashCutscene : MonoBehaviour
         else
             yield return new WaitForSeconds(0.5f);
 
+        if (afterCrashText != null)
+        {
+            afterCrashText.text = "24 HOURS AFTER THE CRASH...";
+            yield return StartCoroutine(FadeText(afterCrashText, 0f, 1f, afterCrashTextFadeTime));
+            yield return new WaitForSeconds(afterCrashTextHoldTime);
+            yield return StartCoroutine(FadeText(afterCrashText, 1f, 0f, afterCrashTextFadeTime));
+        }
+
         SceneManager.LoadScene(nextSceneName);
     }
 
@@ -297,6 +316,22 @@ public class HelicopterCrashCutscene : MonoBehaviour
         }
 
         blackoutGroup.alpha = 1f;
+    }
+
+    IEnumerator FadeText(TMP_Text text, float startAlpha, float endAlpha, float duration)
+    {
+        float t = 0f;
+        Color c = text.color;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, endAlpha, t / duration);
+            text.color = new Color(c.r, c.g, c.b, alpha);
+            yield return null;
+        }
+
+        text.color = new Color(c.r, c.g, c.b, endAlpha);
     }
 
     IEnumerator FadeAudio(AudioSource source, float duration)
