@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class LetterInteraction : MonoBehaviour
 {
+    public static bool IsReadingLetter = false;
+    public static int LastLetterCloseFrame = -1;
+
     public GameObject letterPanel;
     public GameObject pressEText;
     public float interactionDistance = 3f;
@@ -28,6 +31,9 @@ public class LetterInteraction : MonoBehaviour
     void Start()
     {
         playerCamera = Camera.main;
+
+        IsReadingLetter = false;
+        LastLetterCloseFrame = -1;
 
         if (mainCanvas == null)
             mainCanvas = FindObjectOfType<Canvas>();
@@ -116,6 +122,7 @@ public class LetterInteraction : MonoBehaviour
     void OpenLetter()
     {
         letterOpen = true;
+        IsReadingLetter = true;
 
         if (letterPanel != null)
             letterPanel.SetActive(true);
@@ -137,6 +144,8 @@ public class LetterInteraction : MonoBehaviour
     void CloseLetter()
     {
         letterOpen = false;
+        IsReadingLetter = false;
+        LastLetterCloseFrame = Time.frameCount;
 
         if (letterPanel != null)
             letterPanel.SetActive(false);
@@ -152,6 +161,9 @@ public class LetterInteraction : MonoBehaviour
 
     void SetPlayerMovement(bool canMove)
     {
+        if (movementScriptsToDisable == null)
+            return;
+
         for (int i = 0; i < movementScriptsToDisable.Length; i++)
         {
             if (movementScriptsToDisable[i] != null)

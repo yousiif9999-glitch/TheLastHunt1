@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RadioSwitchPuzzle : MonoBehaviour
 {
@@ -38,6 +39,9 @@ public class RadioSwitchPuzzle : MonoBehaviour
 
     [Header("Player Movement Scripts To Disable While Puzzle Is Open")]
     public MonoBehaviour[] movementScriptsToDisable;
+
+    [Header("Ending Scene")]
+    public string rescueEndingSceneName = "RescueEndingScene";
 
     private Camera playerCamera;
     private RectTransform promptRect;
@@ -240,7 +244,15 @@ public class RadioSwitchPuzzle : MonoBehaviour
         if (radioCrackleAudio != null)
             radioCrackleAudio.Stop();
 
-        Invoke(nameof(ClosePuzzle), 2.5f);
+        Invoke(nameof(LoadRescueEndingScene), 2.5f);
+    }
+
+    void LoadRescueEndingScene()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        SceneManager.LoadScene(rescueEndingSceneName);
     }
 
     void ResetSwitches()

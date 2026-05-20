@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/MainScene.unity
     guid: 5a86fdb8daabd284e8053709a450f2db
   - enabled: 1
+    path: Assets/RescueEndingScene.unity
+    guid: d715fc9be2f8b344298c002e8d8ccc76
+  - enabled: 0
     path: Assets/OutdoorsScene.unity
     guid: 8124e5870f4fd4c779e7a5f994e84ad1
   m_configObjects:

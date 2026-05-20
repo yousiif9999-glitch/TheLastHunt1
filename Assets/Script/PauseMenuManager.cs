@@ -18,7 +18,7 @@ public class PauseMenuManager : MonoBehaviour
     public AudioSource pauseMusicSource;
 
     [Header("Scene Names")]
-    public string mainMenuSceneName = "MainMenu";
+    public string mainMenuSceneName = "MainMenuScene";
 
     private bool isPaused = false;
 
@@ -45,6 +45,12 @@ public class PauseMenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            // Important:
+            // If the player is reading the letter, do not open pause menu.
+            // Also ignore the same frame where the letter just closed.
+            if (LetterInteraction.IsReadingLetter || LetterInteraction.LastLetterCloseFrame == Time.frameCount)
+                return;
+
             if (isPaused)
                 ContinueGame();
             else
@@ -65,7 +71,6 @@ public class PauseMenuManager : MonoBehaviour
         DisablePauseScripts();
 
         Time.timeScale = 0f;
-
         AudioListener.pause = true;
 
         if (pauseMusicSource != null && !pauseMusicSource.isPlaying)
@@ -86,7 +91,6 @@ public class PauseMenuManager : MonoBehaviour
         RestorePauseScripts();
 
         Time.timeScale = 1f;
-
         AudioListener.pause = false;
 
         if (pauseMusicSource != null && pauseMusicSource.isPlaying)
@@ -112,6 +116,12 @@ public class PauseMenuManager : MonoBehaviour
 
     private void SaveCurrentStates()
     {
+        if (objectsToHideOnPause == null)
+            objectsToHideOnPause = new GameObject[0];
+
+        if (scriptsToDisableOnPause == null)
+            scriptsToDisableOnPause = new Behaviour[0];
+
         objectPreviousStates = new bool[objectsToHideOnPause.Length];
 
         for (int i = 0; i < objectsToHideOnPause.Length; i++)
@@ -131,6 +141,9 @@ public class PauseMenuManager : MonoBehaviour
 
     private void HidePauseObjects()
     {
+        if (objectsToHideOnPause == null)
+            return;
+
         foreach (GameObject obj in objectsToHideOnPause)
         {
             if (obj != null)
@@ -140,7 +153,8 @@ public class PauseMenuManager : MonoBehaviour
 
     private void RestorePauseObjects()
     {
-        if (objectPreviousStates == null) return;
+        if (objectPreviousStates == null || objectsToHideOnPause == null)
+            return;
 
         for (int i = 0; i < objectsToHideOnPause.Length; i++)
         {
@@ -151,6 +165,9 @@ public class PauseMenuManager : MonoBehaviour
 
     private void DisablePauseScripts()
     {
+        if (scriptsToDisableOnPause == null)
+            return;
+
         foreach (Behaviour script in scriptsToDisableOnPause)
         {
             if (script != null)
@@ -160,7 +177,8 @@ public class PauseMenuManager : MonoBehaviour
 
     private void RestorePauseScripts()
     {
-        if (scriptPreviousStates == null) return;
+        if (scriptPreviousStates == null || scriptsToDisableOnPause == null)
+            return;
 
         for (int i = 0; i < scriptsToDisableOnPause.Length; i++)
         {
