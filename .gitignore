@@ -5,6 +5,8 @@ Obj/
 Build/
 Builds/
 UserSettings/
+MemoryCaptures/
+
 
 *.csproj
 *.unityproj
@@ -12,7 +14,8 @@ UserSettings/
 *.user
 *.userprefs
 
-*.zip
-*.tif
-*.tiff
+*.mp4
 *.psd
+*.blend
+
+*.zip
