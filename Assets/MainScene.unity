@@ -4632,7 +4632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 479be5e53aae54d49812dffd09b697c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 2
   attackDistance: 100
   attackCooldown: 1
 --- !u!114 &423790559
@@ -7640,7 +7640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 479be5e53aae54d49812dffd09b697c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 2
   attackDistance: 100
   attackCooldown: 1
 --- !u!114 &886715025
@@ -12025,15 +12025,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324391726}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalRotation: {x: 0.10738098, y: 0.66634995, z: -0.09904722, w: 0.7311885}
+  m_LocalPosition: {x: -605.2419, y: 0.292407, z: -127.0295}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1922094177}
   - {fileID: 1757862934}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 16.8, y: 84.672, z: -0.104}
 --- !u!114 &1324391730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12064,9 +12064,9 @@ MonoBehaviour:
   normalCrosshairColor: {r: 1, g: 1, b: 1, a: 1}
   hitCrosshairColor: {r: 1, g: 0, b: 0, a: 1}
   hitCrosshairTime: 0.1
-  audioSource: {fileID: 0}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
+  audioSource: {fileID: 1324391733}
+  shootSound: {fileID: 8300000, guid: b2d159f7e00d44d9bbc2d50a0c4fef59, type: 3}
+  reloadSound: {fileID: 8300000, guid: 99cc49e2c75174a00b9ded676f45afc8, type: 3}
   emptyAmmoSound: {fileID: 0}
   ammoText: {fileID: 1504858990}
 --- !u!114 &1324391731
@@ -12123,7 +12123,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: b2d159f7e00d44d9bbc2d50a0c4fef59, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -15157,7 +15157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 479be5e53aae54d49812dffd09b697c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 2
   attackDistance: 100
   attackCooldown: 1
 --- !u!1001 &1691426659
@@ -15435,7 +15435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 479be5e53aae54d49812dffd09b697c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 2
   attackDistance: 100
   attackCooldown: 1
 --- !u!114 &1710655730

@@ -194,4 +194,5 @@ public class GunShoot : MonoBehaviour
 
         ammoText.text = customText != "" ? customText : currentAmmo + " / " + maxAmmo;
     }
+
 }
