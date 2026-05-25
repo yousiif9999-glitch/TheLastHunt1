@@ -45,7 +45,11 @@ public class PauseMenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // Important:
+            // If Quest UI is open, do not open pause menu.
+            // QuestUIManager will close the quest UI using Esc.
+            if (QuestUIManager.IsQuestUIOpen || QuestUIManager.LastClosedFrame == Time.frameCount)
+                return;
+
             // If the player is reading the letter, do not open pause menu.
             // Also ignore the same frame where the letter just closed.
             if (LetterInteraction.IsReadingLetter || LetterInteraction.LastLetterCloseFrame == Time.frameCount)
