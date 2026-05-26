@@ -117,18 +117,18 @@ MonoBehaviour:
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 16
-      punctualShadowFilteringQuality: 2
-      directionalShadowFilteringQuality: 2
+      punctualShadowFilteringQuality: 1
+      directionalShadowFilteringQuality: 1
       areaShadowFilteringQuality: 0
       punctualLightShadowAtlas:
-        shadowAtlasResolution: 4096
+        shadowAtlasResolution: 2048
         shadowAtlasDepthBits: 16
         useDynamicViewportRescale: 1
       areaLightShadowAtlas:
         shadowAtlasResolution: 4096
         shadowAtlasDepthBits: 16
         useDynamicViewportRescale: 0
-      cachedPunctualLightShadowAtlas: 4096
+      cachedPunctualLightShadowAtlas: 2048
       cachedAreaLightShadowAtlas: 4096
       allowDirectionalMixedCachedShadows: 0
       shadowResolutionDirectional:
@@ -226,7 +226,7 @@ MonoBehaviour:
       ChromaticAberrationMaxSamples: 03000000060000000c000000
     lightSettings:
       useContactShadow:
-        m_Values: 000101
+        m_Values: 010100
         m_SchemaId:
           m_Id: 
     maximumLODLevel:

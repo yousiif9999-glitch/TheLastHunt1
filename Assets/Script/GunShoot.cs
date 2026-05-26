@@ -1,10 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class GunShoot : MonoBehaviour
 {
+    [Header("Weapon")]
+    public GameObject pistolObject;
+    public Animator gunAnimator;
+
+    [Header("Camera")]
     public Camera playerCamera;
+
+    [Header("Damage")]
     public float range = 100f;
     public int damage = 25;
 
@@ -14,19 +22,15 @@ public class GunShoot : MonoBehaviour
     public int maxAmmo = 30;
     public float reloadTime = 1.5f;
 
-    [Header("Shooting")]
+    [Header("Shoot")]
     public float fireRate = 0.25f;
-    private float nextFireTime = 0f;
-
-    [Header("Recoil")]
-    public float recoilAmount = 2f;
+    private float nextFireTime;
 
     [Header("Effects")]
-    public GameObject hitEffect;
-
-    [Header("Simple Muzzle Flash")]
     public GameObject muzzleFlashObject;
     public float flashTime = 0.05f;
+
+    public GameObject hitEffect;
 
     [Header("Crosshair")]
     public Image[] crosshairLines;
@@ -42,6 +46,7 @@ public class GunShoot : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text ammoText;
+    public TMP_Text ammoSlotText;
 
     private bool isReloading = false;
 
@@ -56,16 +61,17 @@ public class GunShoot : MonoBehaviour
             muzzleFlashObject.SetActive(false);
 
         SetCrosshairColor(normalCrosshairColor);
+
         UpdateAmmoUI();
     }
 
     void Update()
     {
-        if (isReloading)
-        {
-            UpdateAmmoUI("Reloading...");
+        if (pistolObject == null || !pistolObject.activeSelf)
             return;
-        }
+
+        if (isReloading)
+            return;
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -82,7 +88,6 @@ public class GunShoot : MonoBehaviour
                 if (audioSource != null && emptyAmmoSound != null)
                     audioSource.PlayOneShot(emptyAmmoSound);
 
-                UpdateAmmoUI();
                 return;
             }
 
@@ -96,24 +101,31 @@ public class GunShoot : MonoBehaviour
     {
         currentAmmo--;
 
-        StartCoroutine(ShowMuzzleFlash());
+        // animation
+        if (gunAnimator != null)
+            gunAnimator.Play("PistolShoot", 0, 0f);
 
+        // sound
         if (audioSource != null && shootSound != null)
             audioSource.PlayOneShot(shootSound);
 
-        ApplyRecoil();
+        // muzzle flash
+        StartCoroutine(ShowMuzzleFlash());
 
+        // raycast
         Ray ray = playerCamera.ScreenPointToRay(
             new Vector3(Screen.width / 2f, Screen.height / 2f)
         );
 
         if (Physics.Raycast(ray, out RaycastHit hit, range))
         {
-            Debug.Log("Hit: " + hit.collider.name);
-
             if (hitEffect != null)
             {
-                Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Instantiate(
+                    hitEffect,
+                    hit.point,
+                    Quaternion.LookRotation(hit.normal)
+                );
             }
 
             EnemyHealth enemy = hit.collider.GetComponent<EnemyHealth>();
@@ -128,25 +140,31 @@ public class GunShoot : MonoBehaviour
         UpdateAmmoUI();
     }
 
-    System.Collections.IEnumerator ShowMuzzleFlash()
+    IEnumerator ShowMuzzleFlash()
     {
-        if (muzzleFlashObject == null) yield break;
+        if (muzzleFlashObject == null)
+            yield break;
 
         muzzleFlashObject.SetActive(true);
+
         yield return new WaitForSeconds(flashTime);
+
         muzzleFlashObject.SetActive(false);
     }
 
-    System.Collections.IEnumerator CrosshairHitEffect()
+    IEnumerator CrosshairHitEffect()
     {
         SetCrosshairColor(hitCrosshairColor);
+
         yield return new WaitForSeconds(hitCrosshairTime);
+
         SetCrosshairColor(normalCrosshairColor);
     }
 
     void SetCrosshairColor(Color color)
     {
-        if (crosshairLines == null) return;
+        if (crosshairLines == null)
+            return;
 
         foreach (Image line in crosshairLines)
         {
@@ -155,22 +173,13 @@ public class GunShoot : MonoBehaviour
         }
     }
 
-    void ApplyRecoil()
+    IEnumerator Reload()
     {
-        if (playerCamera == null) return;
-
-        playerCamera.transform.localRotation *= Quaternion.Euler(-recoilAmount, 0f, 0f);
-    }
-
-    System.Collections.IEnumerator Reload()
-    {
-        if (currentAmmo == magazineSize)
-            yield break;
-
-        if (maxAmmo <= 0)
+        if (currentAmmo == magazineSize || maxAmmo <= 0)
             yield break;
 
         isReloading = true;
+
         UpdateAmmoUI("Reloading...");
 
         if (audioSource != null && reloadSound != null)
@@ -185,14 +194,21 @@ public class GunShoot : MonoBehaviour
         maxAmmo -= ammoToLoad;
 
         isReloading = false;
+
         UpdateAmmoUI();
     }
 
     void UpdateAmmoUI(string customText = "")
     {
-        if (ammoText == null) return;
+        string finalText =
+            customText != ""
+            ? customText
+            : currentAmmo + " / " + maxAmmo;
 
-        ammoText.text = customText != "" ? customText : currentAmmo + " / " + maxAmmo;
+        if (ammoText != null)
+            ammoText.text = finalText;
+
+        if (ammoSlotText != null)
+            ammoSlotText.text = finalText;
     }
-
 }

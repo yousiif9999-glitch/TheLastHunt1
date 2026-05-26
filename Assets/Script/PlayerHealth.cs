@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -52,7 +52,7 @@ public class PlayerHealth : MonoBehaviour
         UpdateUI();
     }
 
-    void UpdateUI()
+    public void UpdateUI()
     {
         float healthPercent = (float)currentHealth / maxHealth;
 
@@ -60,7 +60,7 @@ public class PlayerHealth : MonoBehaviour
             healthBar.value = healthPercent;
 
         if (healthText != null)
-            healthText.text = "Health: " + currentHealth;
+            healthText.text = "HEALTH: " + currentHealth;
 
         if (fillImage != null)
         {
