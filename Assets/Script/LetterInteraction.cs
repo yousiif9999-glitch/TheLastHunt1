@@ -22,8 +22,13 @@ public class LetterInteraction : MonoBehaviour
     [Header("Player Movement Scripts To Disable While Letter Is Open")]
     public MonoBehaviour[] movementScriptsToDisable;
 
+    [Header("Quest Completion")]
+    public bool completeQuestWhenLetterClosed = true;
+    public int questIndexToComplete = 0;
+
     private Camera playerCamera;
     private bool letterOpen = false;
+    private bool questCompletedAlready = false;
 
     private RectTransform pressETextRect;
     private RectTransform canvasRect;
@@ -153,10 +158,27 @@ public class LetterInteraction : MonoBehaviour
         if (pressEText != null)
             pressEText.SetActive(false);
 
+        CompleteLetterQuest();
+
         SetPlayerMovement(true);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    void CompleteLetterQuest()
+    {
+        if (!completeQuestWhenLetterClosed)
+            return;
+
+        if (questCompletedAlready)
+            return;
+
+        if (QuestUIManager.Instance != null)
+        {
+            QuestUIManager.Instance.CompleteQuest(questIndexToComplete);
+            questCompletedAlready = true;
+        }
     }
 
     void SetPlayerMovement(bool canMove)
