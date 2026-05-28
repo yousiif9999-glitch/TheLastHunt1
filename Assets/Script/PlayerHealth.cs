@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public Volume lowHealthVolume;
+
     public int maxHealth = 100;
     public int currentHealth;
 
@@ -55,6 +58,18 @@ public class PlayerHealth : MonoBehaviour
     public void UpdateUI()
     {
         float healthPercent = (float)currentHealth / maxHealth;
+
+        if (lowHealthVolume != null)
+        {
+            if (currentHealth <= 30)
+            {
+                lowHealthVolume.weight = 0.1f;
+            }
+            else
+            {
+                lowHealthVolume.weight = 0f;
+            }
+        }
 
         if (healthBar != null)
             healthBar.value = healthPercent;

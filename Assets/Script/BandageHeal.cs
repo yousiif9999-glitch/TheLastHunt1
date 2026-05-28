@@ -4,6 +4,9 @@ using System.Collections;
 
 public class BandageHeal : MonoBehaviour
 {
+    public AudioSource audioSource;
+    public AudioClip bandageSound;
+
     public TMP_Text warningText;
 
     public Animator bandageAnimator;
@@ -23,36 +26,41 @@ public class BandageHeal : MonoBehaviour
 
     void Update()
     {
-        // لازم الباندج يكون ظاهر
+
         if (!gameObject.activeSelf)
             return;
 
-        // عند الضغط
+
         if (Input.GetMouseButtonDown(0))
         {
-            // اذا الهيلث فل
+
             if (playerHealth.currentHealth >= playerHealth.maxHealth)
             {
                 ShowWarning("Health Already Full");
                 return;
             }
 
-            // اذا مافي استخدامات
+
             if (bandageUses <= 0)
                 return;
 
-            // تشغيل الانميشن
+
             if (bandageAnimator != null)
                 bandageAnimator.SetTrigger("Use");
 
+            if (audioSource != null && bandageSound != null)
+            {
+                audioSource.PlayOneShot(bandageSound);
+            }
+
             playerHealth.Heal(healAmount);
 
-            // تقليل الاستخدامات
+
             bandageUses--;
 
             UpdateUI();
 
-            // اذا خلص الباندج
+
             if (bandageUses <= 0)
             {
                 gameObject.SetActive(false);
