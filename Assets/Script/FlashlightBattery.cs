@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class FlashlightBattery : MonoBehaviour
 {
+    public AudioSource audioSource;
+    public AudioClip flashlightClickSound;
+
     public Light flashlightLight;
 
     public float battery = 100f;
@@ -28,6 +31,11 @@ public class FlashlightBattery : MonoBehaviour
         {
             isOn = !isOn;
             flashlightLight.enabled = isOn;
+
+            if (audioSource != null && flashlightClickSound != null)
+            {
+                audioSource.PlayOneShot(flashlightClickSound);
+            }
         }
 
         if (isOn)
@@ -73,7 +81,7 @@ public class FlashlightBattery : MonoBehaviour
             }
         }
 
-        // تحديث النص
+
         if (batteryText != null)
             batteryText.text = Mathf.RoundToInt(battery) + "%";
     }
